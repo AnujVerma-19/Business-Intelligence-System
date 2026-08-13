@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login{% endblock %}
+
+{% block content %}
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <!-- Logo -->
+        <div class="login-logo">
+            <span>B</span>
+        </div>
+
+        <!-- Heading -->
+        <h1>Welcome back</h1>
+
+        <p class="login-subtitle">
+            Sign in to your Business Intelligence System
+        </p>
+
+        <!-- Error Message -->
+        {% if error %}
+        <div class="login-error">
+            <span>⚠️</span>
+            <span>{{ error }}</span>
+        </div>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form method="POST" action="/login">
+
+            <div class="login-field">
+                <label for="username">Username</label>
+
+                <div class="login-input-wrapper">
+                    <span class="input-icon">👤</span>
+
+                    <input
+                        id="username"
+                        type="text"
+                        name="username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+            </div>
+
+
+            <div class="login-field">
+                <label for="password">Password</label>
+
+                <div class="login-input-wrapper">
+                    <span class="input-icon">🔒</span>
+
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword()"
+                        aria-label="Show password"
+                    >
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+
+            <button type="submit" class="login-btn">
+                Sign In
+                <span>→</span>
+            </button>
+
+        </form>
+
+        <!-- Footer -->
+        <div class="login-footer">
+            <span class="footer-dot"></span>
+            Business Intelligence System
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+function togglePassword() {
+
+    const password = document.getElementById("password");
+    const button = document.querySelector(".password-toggle");
+
+    if (password.type === "password") {
+        password.type = "text";
+        button.textContent = "🙈";
+    } else {
+        password.type = "password";
+        button.textContent = "👁️";
+    }
+}
+</script>
+
+{% endblock %}

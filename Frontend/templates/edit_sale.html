@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Sale{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+
+    <div class="form-card">
+
+        <!-- Header -->
+        <div class="form-header">
+
+            <div>
+                <div class="form-icon">✏️</div>
+
+                <h2>Edit Sale</h2>
+
+                <p>Update the sales transaction details below</p>
+            </div>
+
+            <a href="{{ url_for('sales') }}" class="back-btn">
+                ← Back
+            </a>
+
+        </div>
+
+        <hr class="form-divider">
+
+
+        <form method="POST">
+
+            <!-- Order Information -->
+            <div class="form-section-title">
+                Order Information
+            </div>
+
+            <div class="row g-4">
+
+                <!-- Product -->
+                <div class="col-md-6">
+
+                    <label
+                        class="form-label-custom"
+                        for="product_id"
+                    >
+                        Product <span>*</span>
+                    </label>
+
+                    <select
+                        id="product_id"
+                        name="product_id"
+                        class="custom-input"
+                        required
+                    >
+
+                        {% for product in products %}
+
+                        <option
+                            value="{{ product.product_id }}"
+                            {% if product.product_id == sale.product_id %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ product.product_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Customer -->
+                <div class="col-md-6">
+
+                    <label
+                        class="form-label-custom"
+                        for="customer_id"
+                    >
+                        Customer <span>*</span>
+                    </label>
+
+                    <select
+                        id="customer_id"
+                        name="customer_id"
+                        class="custom-input"
+                        required
+                    >
+
+                        {% for customer in customers %}
+
+                        <option
+                            value="{{ customer.id }}"
+                            {% if customer.id == sale.customer_id %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ customer.name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Sale Date -->
+                <div class="col-md-6">
+
+                    <label
+                        class="form-label-custom"
+                        for="sale_date"
+                    >
+                        Sale Date <span>*</span>
+                    </label>
+
+                    <input
+                        id="sale_date"
+                        type="date"
+                        name="sale_date"
+                        class="custom-input"
+                        value="{{ sale.sale_date }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Quantity -->
+                <div class="col-md-6">
+
+                    <label
+                        class="form-label-custom"
+                        for="quantity"
+                    >
+                        Quantity <span>*</span>
+                    </label>
+
+                    <input
+                        id="quantity"
+                        type="number"
+                        name="quantity"
+                        class="custom-input"
+                        value="{{ sale.quantity }}"
+                        min="1"
+                        placeholder="Enter quantity"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Financial Information -->
+            <div class="form-section-title form-section-spacing">
+                Financial Information
+            </div>
+
+            <div class="row g-4">
+
+                <!-- Sales Amount -->
+                <div class="col-md-4">
+
+                    <label
+                        class="form-label-custom"
+                        for="sales_amount"
+                    >
+                        Sales Amount <span>*</span>
+                    </label>
+
+                    <div class="input-with-prefix">
+
+                        <span>₹</span>
+
+                        <input
+                            id="sales_amount"
+                            type="number"
+                            name="sales_amount"
+                            class="custom-input"
+                            value="{{ sale.sales_amount }}"
+                            step="0.01"
+                            placeholder="0.00"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Discount -->
+                <div class="col-md-4">
+
+                    <label
+                        class="form-label-custom"
+                        for="discount"
+                    >
+                        Discount
+                    </label>
+
+                    <div class="input-with-prefix">
+
+                        <span>₹</span>
+
+                        <input
+                            id="discount"
+                            type="number"
+                            name="discount"
+                            class="custom-input"
+                            value="{{ sale.discount }}"
+                            step="0.01"
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Profit -->
+                <div class="col-md-4">
+
+                    <label
+                        class="form-label-custom"
+                        for="profit"
+                    >
+                        Profit
+                    </label>
+
+                    <div class="input-with-prefix">
+
+                        <span>₹</span>
+
+                        <input
+                            id="profit"
+                            type="number"
+                            name="profit"
+                            class="custom-input"
+                            value="{{ sale.profit }}"
+                            step="0.01"
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="form-actions">
+
+                <a
+                    href="{{ url_for('sales') }}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    ✓ Update Sale
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

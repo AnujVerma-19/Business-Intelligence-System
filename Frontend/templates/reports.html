@@ -1,0 +1,664 @@
+{% extends "base.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-logo">B</div>
+
+            <div>
+                <h4>BIS</h4>
+                <small>Business Intelligence</small>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+
+            <p class="menu-title">MAIN MENU</p>
+
+            <a href="/dashboard" class="sidebar-link">
+                <span class="menu-icon">🏠</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('products') }}" class="sidebar-link">
+                <span class="menu-icon">📦</span>
+                <span>Products</span>
+            </a>
+
+            <a href="{{ url_for('customers') }}" class="sidebar-link">
+                <span class="menu-icon">👥</span>
+                <span>Customers</span>
+            </a>
+
+            <a href="{{ url_for('sales') }}" class="sidebar-link">
+                <span class="menu-icon">💰</span>
+                <span>Sales</span>
+            </a>
+
+            <a href="{{ url_for('delivery') }}" class="sidebar-link">
+                <span class="menu-icon">🚚</span>
+                <span>Delivery</span>
+            </a>
+
+            <a href="{{ url_for('reports') }}" class="sidebar-link active">
+                <span class="menu-icon">📊</span>
+                <span>Reports</span>
+            </a>
+
+        </div>
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('login') }}" class="sidebar-link logout-link">
+                <span class="menu-icon">🚪</span>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="page-main">
+
+        <!-- Header -->
+        <div class="page-header">
+
+            <div>
+
+                <p class="dashboard-subtitle">ANALYTICS</p>
+
+                <h1>Business Intelligence Reports</h1>
+
+                <p>
+                    Analyze sales, profit, customers and delivery performance.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Overall Summary -->
+        <div class="report-section-title">
+
+            <div>
+                <h2>Business Overview</h2>
+                <p>Overall business performance</p>
+            </div>
+
+        </div>
+
+
+        <div class="sales-summary-grid">
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon sales-money">
+                    ₹
+                </div>
+
+                <div>
+
+                    <p>Total Sales</p>
+
+                    <h3>
+                        ₹{{ "%.2f"|format(total_sales|float) }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon sales-profit">
+                    📈
+                </div>
+
+                <div>
+
+                    <p>Total Profit</p>
+
+                    <h3>
+                        ₹{{ "%.2f"|format(total_profit|float) }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon sales-orders">
+                    🧾
+                </div>
+
+                <div>
+
+                    <p>Total Orders</p>
+
+                    <h3>
+                        {{ total_orders }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon sales-quantity">
+                    👥
+                </div>
+
+                <div>
+
+                    <p>Total Customers</p>
+
+                    <h3>
+                        {{ total_customers }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Delivery Performance -->
+        <div class="report-section-title delivery-report-title">
+
+            <div>
+                <h2>Delivery Performance</h2>
+                <p>Monitor logistics and delivery efficiency</p>
+            </div>
+
+        </div>
+
+
+        <div class="sales-summary-grid">
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon delivery-total">
+                    🚚
+                </div>
+
+                <div>
+
+                    <p>Total Deliveries</p>
+
+                    <h3>
+                        {{ delivery_summary.total_deliveries or 0 }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon delivery-time">
+                    ⏱️
+                </div>
+
+                <div>
+
+                    <p>Avg Delivery Time</p>
+
+                    <h3>
+                        {{ delivery_summary.avg_delivery_time or 0 }} min
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon delivery-distance">
+                    📍
+                </div>
+
+                <div>
+
+                    <p>Avg Distance</p>
+
+                    <h3>
+                        {{ delivery_summary.avg_distance or 0 }} km
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon delivery-partners">
+                    ⚠️
+                </div>
+
+                <div>
+
+                    <p>Delayed Deliveries</p>
+
+                    <h3>
+                        {{ delivery_summary.delayed_deliveries or 0 }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Charts Row 1 -->
+        <div class="reports-chart-grid">
+
+            <!-- Monthly Sales -->
+            <div class="content-card report-chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>Monthly Sales</h3>
+
+                        <p>
+                            Revenue trend by month
+                        </p>
+
+                    </div>
+
+                    <span class="chart-badge">
+                        Revenue
+                    </span>
+
+                </div>
+
+                <div class="report-chart-container">
+
+                    <canvas id="monthlySalesChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- Monthly Profit -->
+            <div class="content-card report-chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>Monthly Profit</h3>
+
+                        <p>
+                            Profit performance by month
+                        </p>
+
+                    </div>
+
+                    <span class="chart-badge">
+                        Profit
+                    </span>
+
+                </div>
+
+                <div class="report-chart-container">
+
+                    <canvas id="monthlyProfitChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Charts Row 2 -->
+        <div class="reports-chart-grid">
+
+
+            <!-- Sales Category -->
+            <div class="content-card report-chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>Sales by Category</h3>
+
+                        <p>
+                            Category-wise sales performance
+                        </p>
+
+                    </div>
+
+                    <span class="chart-badge">
+                        Category
+                    </span>
+
+                </div>
+
+                <div class="report-chart-container">
+
+                    <canvas id="salesCategoryChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- Top Products -->
+            <div class="content-card report-chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>Top 5 Products by Sales</h3>
+
+                        <p>
+                            Best performing products
+                        </p>
+
+                    </div>
+
+                    <span class="chart-badge">
+                        Top 5
+                    </span>
+
+                </div>
+
+                <div class="report-chart-container">
+
+                    <canvas id="topProductsChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+/* =========================================
+   MONTHLY SALES
+   ========================================= */
+
+const monthlySales = JSON.parse(
+    '{{ monthly_sales | tojson | safe }}'
+);
+
+const salesLabels = monthlySales.map(
+    item => item.month
+);
+
+const salesValues = monthlySales.map(
+    item => Number(item.total_sales)
+);
+
+
+new Chart(
+    document.getElementById("monthlySalesChart"),
+    {
+        type: "line",
+
+        data: {
+
+            labels: salesLabels,
+
+            datasets: [{
+
+                label: "Monthly Sales",
+
+                data: salesValues,
+
+                borderWidth: 3,
+
+                tension: 0.35,
+
+                fill: false,
+
+                pointRadius: 4,
+
+                pointHoverRadius: 6
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: true
+                }
+
+            },
+
+            scales: {
+
+                y: {
+                    beginAtZero: true
+                }
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   MONTHLY PROFIT
+   ========================================= */
+
+const monthlyProfit = JSON.parse(
+    '{{ monthly_profit | tojson | safe }}'
+);
+
+const profitLabels = monthlyProfit.map(
+    item => item.month
+);
+
+const profitValues = monthlyProfit.map(
+    item => Number(item.total_profit)
+);
+
+
+new Chart(
+    document.getElementById("monthlyProfitChart"),
+    {
+        type: "bar",
+
+        data: {
+
+            labels: profitLabels,
+
+            datasets: [{
+
+                label: "Monthly Profit",
+
+                data: profitValues,
+
+                borderWidth: 2
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+                    beginAtZero: true
+                }
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   SALES BY CATEGORY
+   ========================================= */
+
+const categoryData = JSON.parse(
+    '{{ sales_by_category | tojson | safe }}'
+);
+
+const categoryLabels = categoryData.map(
+    item => item.category
+);
+
+const categoryValues = categoryData.map(
+    item => Number(item.total_sales)
+);
+
+
+new Chart(
+    document.getElementById("salesCategoryChart"),
+    {
+        type: "bar",
+
+        data: {
+
+            labels: categoryLabels,
+
+            datasets: [{
+
+                label: "Sales",
+
+                data: categoryValues,
+
+                borderWidth: 2
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+                    beginAtZero: true
+                }
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   TOP 5 PRODUCTS
+   ========================================= */
+
+const topProductsData = JSON.parse(
+    '{{ top_products | tojson | safe }}'
+);
+
+const productLabels = topProductsData.map(
+    item => item.product_name
+);
+
+const productValues = topProductsData.map(
+    item => Number(item.total_sales)
+);
+
+
+new Chart(
+    document.getElementById("topProductsChart"),
+    {
+        type: "bar",
+
+        data: {
+
+            labels: productLabels,
+
+            datasets: [{
+
+                label: "Sales",
+
+                data: productValues,
+
+                borderWidth: 2
+
+            }]
+
+        },
+
+        options: {
+
+            indexAxis: "y",
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                x: {
+                    beginAtZero: true
+                }
+
+            }
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

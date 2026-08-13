@@ -1,0 +1,462 @@
+{% extends "base.html" %}
+
+{% block title %}Delivery{% endblock %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-logo">B</div>
+
+            <div>
+                <h4>BIS</h4>
+                <small>Business Intelligence</small>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+
+            <p class="menu-title">MAIN MENU</p>
+
+            <a href="/dashboard" class="sidebar-link">
+                <span class="menu-icon">🏠</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('products') }}" class="sidebar-link">
+                <span class="menu-icon">📦</span>
+                <span>Products</span>
+            </a>
+
+            <a href="{{ url_for('customers') }}" class="sidebar-link">
+                <span class="menu-icon">👥</span>
+                <span>Customers</span>
+            </a>
+
+            <a href="{{ url_for('sales') }}" class="sidebar-link">
+                <span class="menu-icon">💰</span>
+                <span>Sales</span>
+            </a>
+
+            <a href="{{ url_for('delivery') }}" class="sidebar-link active">
+                <span class="menu-icon">🚚</span>
+                <span>Delivery</span>
+            </a>
+
+            <a href="{{ url_for('reports') }}" class="sidebar-link">
+                <span class="menu-icon">📊</span>
+                <span>Reports</span>
+            </a>
+
+        </div>
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('login') }}" class="sidebar-link logout-link">
+                <span class="menu-icon">🚪</span>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="page-main">
+
+        <!-- Header -->
+        <div class="page-header">
+
+            <div>
+                <p class="dashboard-subtitle">LOGISTICS</p>
+
+                <h1>Delivery Management</h1>
+
+                <p>
+                    Monitor delivery performance, distance and status.
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- Summary Cards -->
+        <div class="sales-summary-grid">
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon delivery-total">
+                    🚚
+                </div>
+
+                <div>
+                    <p>Total Deliveries</p>
+
+                    <h3>
+                        {{ total_deliveries }}
+                    </h3>
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon delivery-time">
+                    ⏱️
+                </div>
+
+                <div>
+                    <p>Avg Delivery Time</p>
+
+                    <h3>
+                        {{ avg_delivery_time }} min
+                    </h3>
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon delivery-distance">
+                    📍
+                </div>
+
+                <div>
+                    <p>Avg Distance</p>
+
+                    <h3>
+                        {{ avg_distance }} km
+                    </h3>
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon delivery-partners">
+                    👤
+                </div>
+
+                <div>
+                    <p>Delivery Partners</p>
+
+                    <h3>
+                        {{ total_partners }}
+                    </h3>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Search -->
+        <div class="content-card search-card">
+
+            <form
+                method="GET"
+                action="{{ url_for('delivery') }}"
+                class="product-search"
+            >
+
+                <div class="search-input-wrapper">
+
+                    <span>🔍</span>
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="modern-search-input"
+                        placeholder="Search order, partner or status..."
+                        value="{{ search }}"
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="modern-search-btn"
+                >
+                    Search
+                </button>
+
+                {% if search %}
+
+                <a
+                    href="{{ url_for('delivery') }}"
+                    class="clear-search-btn"
+                >
+                    Clear
+                </a>
+
+                {% endif %}
+
+            </form>
+
+        </div>
+
+
+        <!-- Delivery Status Chart -->
+        <div class="content-card chart-card">
+
+            <div class="chart-header">
+
+                <div>
+                    <h3>Delivery Status Distribution</h3>
+
+                    <p>
+                        Overview of completed and delayed deliveries
+                    </p>
+                </div>
+
+                <span class="chart-badge">
+                    Delivery
+                </span>
+
+            </div>
+
+            <div class="delivery-chart-container">
+
+                <canvas
+                    id="deliveryStatusChart"
+                    data-status='{{ delivery_status | tojson }}'
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- Delivery Table -->
+        <div class="content-card table-card delivery-table-card">
+
+            <div class="table-header">
+
+                <div>
+
+                    <h3>Delivery Records</h3>
+
+                    <p>
+                        Delivery time, distance and status details
+                    </p>
+
+                </div>
+
+                <span class="record-label">
+                    Page {{ page }} of {{ total_pages }}
+                </span>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table class="modern-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Partner</th>
+                            <th>Promised Time</th>
+                            <th>Actual Time</th>
+                            <th>Delivery Time</th>
+                            <th>Distance</th>
+                            <th>Status</th>
+                            <th>Delay Reason</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for delivery in deliveries %}
+
+                        <tr>
+
+                            <td>
+
+                                <span class="product-id">
+                                    #{{ delivery.order_id }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    {{ delivery.delivery_partner_id }}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+                                {{ delivery.promised_time }}
+                            </td>
+
+
+                            <td>
+                                {{ delivery.actual_time }}
+                            </td>
+
+
+                            <td>
+
+                                <span class="orders-badge">
+                                    {{ delivery.delivery_time_minutes }} min
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                {{ delivery.distance_km }} km
+                            </td>
+
+
+                            <td>
+
+                                {% if delivery.delivery_status == "Delivered" %}
+
+                                    <span class="delivery-status delivered">
+                                        ● Delivered
+                                    </span>
+
+                                {% elif delivery.delivery_status == "Delayed" %}
+
+                                    <span class="delivery-status delayed">
+                                        ● Delayed
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="delivery-status other">
+                                        ● {{ delivery.delivery_status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="delay-reason">
+                                    {{ delivery.reasons_if_delayed or "-" }}
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                    {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="empty-state"
+                            >
+
+                                <div>🚚</div>
+
+                                <strong>
+                                    No delivery records found
+                                </strong>
+
+                                <p>
+                                    Try another search.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- Pagination -->
+            {% if total_pages > 1 %}
+
+            <div class="pagination-wrapper">
+
+                <ul class="modern-pagination">
+
+                    {% if page > 1 %}
+
+                    <li>
+
+                        <a
+                            href="{{ url_for('delivery', page=page-1, search=search) }}"
+                        >
+                            ← Previous
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+
+                    {% for p in range(
+                        [1, page-2]|max,
+                        [total_pages, page+2]|min + 1
+                    ) %}
+
+                    <li class="{% if p == page %}active{% endif %}">
+
+                        <a
+                            href="{{ url_for('delivery', page=p, search=search) }}"
+                        >
+                            {{ p }}
+                        </a>
+
+                    </li>
+
+                    {% endfor %}
+
+
+                    {% if page < total_pages %}
+
+                    <li>
+
+                        <a
+                            href="{{ url_for('delivery', page=page+1, search=search) }}"
+                        >
+                            Next →
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+                </ul>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}

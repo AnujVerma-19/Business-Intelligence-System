@@ -1,0 +1,511 @@
+{% extends "base.html" %}
+
+{% block title %}Sales{% endblock %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-logo">B</div>
+            <div>
+                <h4>BIS</h4>
+                <small>Business Intelligence</small>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+
+            <p class="menu-title">MAIN MENU</p>
+
+            <a href="/dashboard" class="sidebar-link">
+                <span class="menu-icon">🏠</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('products') }}" class="sidebar-link">
+                <span class="menu-icon">📦</span>
+                <span>Products</span>
+            </a>
+
+            <a href="{{ url_for('customers') }}" class="sidebar-link">
+                <span class="menu-icon">👥</span>
+                <span>Customers</span>
+            </a>
+
+            <a href="{{ url_for('sales') }}" class="sidebar-link active">
+                <span class="menu-icon">💰</span>
+                <span>Sales</span>
+            </a>
+
+            <a href="{{ url_for('delivery') }}" class="sidebar-link">
+                <span class="menu-icon">🚚</span>
+                <span>Delivery</span>
+            </a>
+
+            <a href="{{ url_for('reports') }}" class="sidebar-link">
+                <span class="menu-icon">📊</span>
+                <span>Reports</span>
+            </a>
+
+        </div>
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('login') }}" class="sidebar-link logout-link">
+                <span class="menu-icon">🚪</span>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Main -->
+    <main class="page-main">
+
+        <!-- Header -->
+        <div class="page-header">
+
+            <div>
+                <p class="dashboard-subtitle">TRANSACTIONS</p>
+
+                <h1>Sales Management</h1>
+
+                <p>
+                    Track sales, revenue, discounts and profit.
+                </p>
+            </div>
+
+            <a
+                href="{{ url_for('add_sale_page') }}"
+                class="modern-add-btn"
+            >
+                + Add Sale
+            </a>
+
+        </div>
+
+
+        <!-- Summary Cards -->
+        <div class="sales-summary-grid">
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon sales-money">
+                    ₹
+                </div>
+
+                <div>
+                    <p>Total Sales</p>
+
+                    <h3>
+                        ₹{{ "%.2f"|format(summary.total_sales|float) }}
+                    </h3>
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon sales-profit">
+                    📈
+                </div>
+
+                <div>
+                    <p>Total Profit</p>
+
+                    <h3>
+                        ₹{{ "%.2f"|format(summary.total_profit|float) }}
+                    </h3>
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon sales-quantity">
+                    📦
+                </div>
+
+                <div>
+                    <p>Quantity Sold</p>
+
+                    <h3>
+                        {{ summary.total_quantity }}
+                    </h3>
+                </div>
+
+            </div>
+
+
+            <div class="sales-summary-card">
+
+                <div class="summary-icon sales-orders">
+                    🧾
+                </div>
+
+                <div>
+                    <p>Total Orders</p>
+
+                    <h3>
+                        {{ summary.total_orders }}
+                    </h3>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Search -->
+        <div class="content-card search-card">
+
+            <form
+                method="GET"
+                action="{{ url_for('sales') }}"
+                class="product-search"
+            >
+
+                <div class="search-input-wrapper">
+
+                    <span>🔍</span>
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="modern-search-input"
+                        placeholder="Search by product or customer..."
+                        value="{{ search }}"
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="modern-search-btn"
+                >
+                    Search
+                </button>
+
+                {% if search %}
+
+                <a
+                    href="{{ url_for('sales') }}"
+                    class="clear-search-btn"
+                >
+                    Clear
+                </a>
+
+                {% endif %}
+
+            </form>
+
+        </div>
+
+
+        <!-- Sales Table -->
+        <div class="content-card table-card">
+
+            <div class="table-header">
+
+                <div>
+                    <h3>Sales Transactions</h3>
+
+                    <p>
+                        Complete sales and profit records
+                    </p>
+                </div>
+
+                <span class="record-label">
+                    Page {{ page }} of {{ total_pages }}
+                </span>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table class="modern-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Sale ID</th>
+                            <th>Product</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Quantity</th>
+                            <th>Sales Amount</th>
+                            <th>Discount</th>
+                            <th>Profit</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for sale in sales %}
+
+                        <tr>
+
+                            <td>
+                                <span class="product-id">
+                                    #{{ sale.sale_id }}
+                                </span>
+                            </td>
+
+
+                            <td>
+                                <strong>
+                                    {{ sale.product_name }}
+                                </strong>
+                            </td>
+
+
+                            <td>
+                                <span class="customer-email">
+                                    {{ sale.customer_name }}
+                                </span>
+                            </td>
+
+
+                            <td>
+                                {{ sale.sale_date }}
+                            </td>
+
+
+                            <td>
+
+                                <span class="orders-badge">
+                                    {{ sale.quantity }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                <strong>
+                                    ₹ {{ sale.sales_amount }}
+                                </strong>
+                            </td>
+
+
+                            <td>
+                                ₹ {{ sale.discount }}
+                            </td>
+
+
+                            <td>
+
+                                <span class="profit-value">
+                                    ₹ {{ sale.profit }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="action-buttons">
+
+                                    <a
+                                        href="{{ url_for('edit_sale', sale_id=sale.sale_id) }}"
+                                        class="edit-btn"
+                                    >
+                                        Edit
+                                    </a>
+
+                                    <a
+                                        href="{{ url_for('delete_sale_page', sale_id=sale.sale_id) }}"
+                                        class="delete-btn"
+                                        onclick="return confirm('Are you sure you want to delete this sale?');"
+                                    >
+                                        Delete
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                    {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="9"
+                                class="empty-state"
+                            >
+
+                                <div>💰</div>
+
+                                <strong>
+                                    No sales records found
+                                </strong>
+
+                                <p>
+                                    Try another search or add a new sale.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- Pagination -->
+            {% if total_pages > 1 %}
+
+            <div class="pagination-wrapper">
+
+                <ul class="modern-pagination">
+
+                    {% if page > 1 %}
+
+                    <li>
+                        <a
+                            href="{{ url_for('sales', page=page-1, search=search) }}"
+                        >
+                            ← Previous
+                        </a>
+                    </li>
+
+                    {% endif %}
+
+
+                    {% if page > 3 %}
+
+                    <li>
+
+                        <a
+                            href="{{ url_for('sales', page=1, search=search) }}"
+                        >
+                            1
+                        </a>
+
+                    </li>
+
+                    <li class="pagination-dots">
+                        ...
+                    </li>
+
+                    {% endif %}
+
+
+                    {% for p in range(
+                        [1, page-2]|max,
+                        [total_pages, page+2]|min + 1
+                    ) %}
+
+                    <li class="{% if p == page %}active{% endif %}">
+
+                        <a
+                            href="{{ url_for('sales', page=p, search=search) }}"
+                        >
+                            {{ p }}
+                        </a>
+
+                    </li>
+
+                    {% endfor %}
+
+
+                    {% if page < total_pages - 2 %}
+
+                    <li class="pagination-dots">
+                        ...
+                    </li>
+
+                    <li>
+
+                        <a
+                            href="{{ url_for('sales', page=total_pages, search=search) }}"
+                        >
+                            {{ total_pages }}
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+
+                    {% if page < total_pages %}
+
+                    <li>
+
+                        <a
+                            href="{{ url_for('sales', page=page+1, search=search) }}"
+                        >
+                            Next →
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+                </ul>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Monthly Sales Chart -->
+        <div class="content-card chart-card">
+
+            <div class="chart-header">
+
+                <div>
+                    <h3>Monthly Sales Trend</h3>
+
+                    <p>
+                        Sales performance over time
+                    </p>
+                </div>
+
+                <span class="chart-badge">
+                    Sales
+                </span>
+
+            </div>
+
+            <div class="sales-chart-container">
+
+                <canvas id="monthlySalesChart"></canvas>
+
+            </div>
+
+            <script
+                id="monthlySalesData"
+                type="application/json"
+            >
+                {{ monthly_sales | tojson }}
+            </script>
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}

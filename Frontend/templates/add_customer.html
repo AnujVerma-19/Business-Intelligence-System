@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}Add Customer{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+
+    <div class="form-card">
+
+        <!-- Header -->
+        <div class="form-header">
+
+            <div>
+                <div class="form-icon">👥</div>
+
+                <h2>Add New Customer</h2>
+
+                <p>Enter the customer details below</p>
+            </div>
+
+            <a href="{{ url_for('customers') }}" class="back-btn">
+                ← Back
+            </a>
+
+        </div>
+
+
+        <hr class="form-divider">
+
+
+        <form method="POST">
+
+            <div class="form-section-title">
+                Customer Information
+            </div>
+
+
+            <div class="row g-4">
+
+                <!-- Name -->
+                <div class="col-md-6">
+
+                    <label class="form-label-custom" for="name">
+                        Customer Name <span>*</span>
+                    </label>
+
+                    <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        class="custom-input"
+                        required
+                        placeholder="Enter customer name"
+                    >
+
+                </div>
+
+
+                <!-- Email -->
+                <div class="col-md-6">
+
+                    <label class="form-label-custom" for="email">
+                        Email
+                    </label>
+
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        class="custom-input"
+                        placeholder="Enter email address"
+                    >
+
+                </div>
+
+
+                <!-- Phone -->
+                <div class="col-md-6">
+
+                    <label class="form-label-custom" for="phone_no">
+                        Phone Number
+                    </label>
+
+                    <input
+                        id="phone_no"
+                        type="text"
+                        name="phone_no"
+                        class="custom-input"
+                        placeholder="Enter phone number"
+                    >
+
+                </div>
+
+
+                <!-- Address -->
+                <div class="col-md-6">
+
+                    <label class="form-label-custom" for="address">
+                        Address
+                    </label>
+
+                    <input
+                        id="address"
+                        type="text"
+                        name="address"
+                        class="custom-input"
+                        placeholder="Enter customer address"
+                    >
+
+                </div>
+
+
+                <!-- Area -->
+                <div class="col-md-6">
+
+                    <label class="form-label-custom" for="area">
+                        Area
+                    </label>
+
+                    <input
+                        id="area"
+                        type="text"
+                        name="area"
+                        class="custom-input"
+                        placeholder="Enter area"
+                    >
+
+                </div>
+
+
+                <!-- Pincode -->
+                <div class="col-md-6">
+
+                    <label class="form-label-custom" for="pincode">
+                        Pincode
+                    </label>
+
+                    <input
+                        id="pincode"
+                        type="number"
+                        name="pincode"
+                        class="custom-input"
+                        placeholder="Enter pincode"
+                    >
+
+                </div>
+
+
+                <!-- Registration No -->
+                <div class="col-md-6">
+
+                    <label class="form-label-custom" for="registration_no">
+                        Registration Number
+                    </label>
+
+                    <input
+                        id="registration_no"
+                        type="text"
+                        name="registration_no"
+                        class="custom-input"
+                        placeholder="Enter registration number"
+                    >
+
+                </div>
+
+
+                <!-- Customer Segment -->
+                <div class="col-md-6">
+
+                    <label class="form-label-custom" for="customer_segment">
+                        Customer Segment
+                    </label>
+
+                    <input
+                        id="customer_segment"
+                        type="text"
+                        name="customer_segment"
+                        class="custom-input"
+                        placeholder="e.g. Regular, Premium"
+                    >
+
+                </div>
+
+
+                <!-- Total Orders -->
+                <div class="col-md-6">
+
+                    <label class="form-label-custom" for="total_order">
+                        Total Orders
+                    </label>
+
+                    <input
+                        id="total_order"
+                        type="number"
+                        name="total_order"
+                        class="custom-input"
+                        placeholder="Enter total orders"
+                    >
+
+                </div>
+
+
+                <!-- Average Order -->
+                <div class="col-md-6">
+
+                    <label class="form-label-custom" for="avg_order">
+                        Average Order
+                    </label>
+
+                    <div class="input-with-prefix">
+
+                        <span>₹</span>
+
+                        <input
+                            id="avg_order"
+                            type="number"
+                            step="0.01"
+                            name="avg_order"
+                            class="custom-input"
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="form-actions">
+
+                <a
+                    href="{{ url_for('customers') }}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    ✓ Save Customer
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

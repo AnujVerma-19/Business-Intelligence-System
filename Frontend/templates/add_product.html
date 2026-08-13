@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+
+    <div class="form-card">
+
+        <!-- Header -->
+        <div class="form-header">
+            <div>
+                <div class="form-icon">📦</div>
+                <h2>Add New Product</h2>
+                <p>Enter the product details below</p>
+            </div>
+
+            <a href="{{ url_for('products') }}" class="back-btn">
+                ← Back
+            </a>
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- Product Form -->
+        <form method="POST">
+
+            <div class="form-section-title">
+                Product Information
+            </div>
+
+            <div class="row g-4">
+
+                <!-- Product Name -->
+                <div class="col-md-6">
+                    <label for="product_name" class="form-label-custom">
+                        Product Name <span>*</span>
+                    </label>
+
+                    <input
+                        id="product_name"
+                        type="text"
+                        class="custom-input"
+                        name="product_name"
+                        placeholder="Enter product name"
+                        required
+                    >
+                </div>
+
+
+                <!-- Category -->
+                <div class="col-md-6">
+                    <label for="category" class="form-label-custom">
+                        Category
+                    </label>
+
+                    <input
+                        id="category"
+                        type="text"
+                        class="custom-input"
+                        name="category"
+                        placeholder="e.g. Beverages"
+                    >
+                </div>
+
+
+                <!-- Brand -->
+                <div class="col-md-6">
+                    <label for="brand" class="form-label-custom">
+                        Brand
+                    </label>
+
+                    <input
+                        id="brand"
+                        type="text"
+                        class="custom-input"
+                        name="brand"
+                        placeholder="Enter brand name"
+                    >
+                </div>
+
+
+                <!-- Price -->
+                <div class="col-md-3">
+                    <label for="price" class="form-label-custom">
+                        Price
+                    </label>
+
+                    <div class="input-with-prefix">
+                        <span>₹</span>
+
+                        <input
+                            id="price"
+                            type="number"
+                            step="0.01"
+                            class="custom-input"
+                            name="price"
+                            placeholder="0.00"
+                        >
+                    </div>
+                </div>
+
+
+                <!-- MRP -->
+                <div class="col-md-3">
+                    <label for="mrp" class="form-label-custom">
+                        MRP
+                    </label>
+
+                    <div class="input-with-prefix">
+                        <span>₹</span>
+
+                        <input
+                            id="mrp"
+                            type="number"
+                            step="0.01"
+                            class="custom-input"
+                            name="mrp"
+                            placeholder="0.00"
+                        >
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="form-actions">
+
+                <a
+                    href="{{ url_for('products') }}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+                <button type="submit" class="save-btn">
+                    ✓ Save Product
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

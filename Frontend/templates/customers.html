@@ -1,0 +1,395 @@
+{% extends "base.html" %}
+
+{% block title %}Customers{% endblock %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-logo">B</div>
+
+            <div>
+                <h4>BIS</h4>
+                <small>Business Intelligence</small>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+
+            <p class="menu-title">MAIN MENU</p>
+
+            <a href="/dashboard" class="sidebar-link">
+                <span class="menu-icon">🏠</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('products') }}" class="sidebar-link">
+                <span class="menu-icon">📦</span>
+                <span>Products</span>
+            </a>
+
+            <a href="{{ url_for('customers') }}" class="sidebar-link active">
+                <span class="menu-icon">👥</span>
+                <span>Customers</span>
+            </a>
+
+            <a href="{{ url_for('sales') }}" class="sidebar-link">
+                <span class="menu-icon">💰</span>
+                <span>Sales</span>
+            </a>
+
+            <a href="{{ url_for('delivery') }}" class="sidebar-link">
+                <span class="menu-icon">🚚</span>
+                <span>Delivery</span>
+            </a>
+
+            <a href="{{ url_for('reports') }}" class="sidebar-link">
+                <span class="menu-icon">📊</span>
+                <span>Reports</span>
+            </a>
+
+        </div>
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('login') }}" class="sidebar-link logout-link">
+                <span class="menu-icon">🚪</span>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="page-main">
+
+        <!-- Header -->
+        <div class="page-header">
+
+            <div>
+
+                <p class="dashboard-subtitle">CUSTOMERS</p>
+
+                <h1>Customer Management</h1>
+
+                <p>
+                    Manage customer information and order activity.
+                </p>
+
+            </div>
+
+            <a href="/add-customer" class="modern-add-btn">
+                + Add Customer
+            </a>
+
+        </div>
+
+
+        <!-- Search -->
+        <div class="content-card search-card">
+
+            <form
+                method="GET"
+                action="{{ url_for('customers') }}"
+                class="product-search"
+            >
+
+                <div class="search-input-wrapper">
+
+                    <span>🔍</span>
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="modern-search-input"
+                        placeholder="Search by name, email or phone..."
+                        value="{{ search }}"
+                    >
+
+                </div>
+
+                <button type="submit" class="modern-search-btn">
+                    Search
+                </button>
+
+                {% if search %}
+
+                <a
+                    href="{{ url_for('customers') }}"
+                    class="clear-search-btn"
+                >
+                    Clear
+                </a>
+
+                {% endif %}
+
+            </form>
+
+        </div>
+
+
+        <!-- Customer Table -->
+        <div class="content-card table-card">
+
+            <div class="table-header">
+
+                <div>
+
+                    <h3>Customer List</h3>
+
+                    <p>
+                        Customer information and order statistics
+                    </p>
+
+                </div>
+
+                <span class="record-label">
+                    Page {{ page }} of {{ total_pages }}
+                </span>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table class="modern-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Area</th>
+                            <th>Total Orders</th>
+                            <th>Average Order</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for customer in customers %}
+
+                        <tr>
+
+                            <td>
+                                <span class="product-id">
+                                    #{{ customer.id }}
+                                </span>
+                            </td>
+
+
+                            <td>
+                                <strong>
+                                    {{ customer.name }}
+                                </strong>
+                            </td>
+
+
+                            <td>
+                                <span class="customer-email">
+                                    {{ customer.email }}
+                                </span>
+                            </td>
+
+
+                            <td>
+                                {{ customer.phone_no }}
+                            </td>
+
+
+                            <td>
+
+                                <span class="category-badge">
+                                    {{ customer.area }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="orders-badge">
+                                    {{ customer.total_order }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                <strong>
+                                    ₹ {{ customer.avg_order }}
+                                </strong>
+                            </td>
+
+
+                            <td>
+
+                                <div class="action-buttons">
+
+                                    <a
+                                        href="{{ url_for('edit_customer', customer_id=customer.id) }}"
+                                        class="edit-btn"
+                                    >
+                                        Edit
+                                    </a>
+
+
+                                    <a
+                                        href="{{ url_for('delete_customer_page', customer_id=customer.id) }}"
+                                        class="delete-btn"
+                                        onclick="return confirm('Are you sure you want to delete this customer?');"
+                                    >
+                                        Delete
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                    {% else %}
+
+                        <tr>
+
+                            <td colspan="8" class="empty-state">
+
+                                <div>👥</div>
+
+                                <strong>No customers found</strong>
+
+                                <p>
+                                    Try another search or add a new customer.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- Pagination -->
+            {% if total_pages > 1 %}
+
+            <div class="pagination-wrapper">
+
+                <ul class="modern-pagination">
+
+
+                    {% if page > 1 %}
+
+                    <li>
+
+                        <a
+                            href="{{ url_for('customers', page=page-1, search=search) }}"
+                        >
+                            ← Previous
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+
+                    {% if page > 3 %}
+
+                    <li>
+
+                        <a
+                            href="{{ url_for('customers', page=1, search=search) }}"
+                        >
+                            1
+                        </a>
+
+                    </li>
+
+                    <li class="pagination-dots">
+                        ...
+                    </li>
+
+                    {% endif %}
+
+
+                    {% for p in range(
+                        [1, page-2]|max,
+                        [total_pages, page+2]|min + 1
+                    ) %}
+
+                    <li class="{% if p == page %}active{% endif %}">
+
+                        <a
+                            href="{{ url_for('customers', page=p, search=search) }}"
+                        >
+                            {{ p }}
+                        </a>
+
+                    </li>
+
+                    {% endfor %}
+
+
+                    {% if page < total_pages - 2 %}
+
+                    <li class="pagination-dots">
+                        ...
+                    </li>
+
+                    <li>
+
+                        <a
+                            href="{{ url_for('customers', page=total_pages, search=search) }}"
+                        >
+                            {{ total_pages }}
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+
+                    {% if page < total_pages %}
+
+                    <li>
+
+                        <a
+                            href="{{ url_for('customers', page=page+1, search=search) }}"
+                        >
+                            Next →
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+                </ul>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}
