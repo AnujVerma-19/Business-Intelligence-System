@@ -1,84 +1,184 @@
 # Business Intelligence System
 
-A Flask and MySQL based business intelligence web application for managing and analyzing products, customers, sales, and delivery performance.
+A full-stack **Business Intelligence System** built with **Flask, MySQL, HTML, CSS and JavaScript** to manage business data and provide analytical insights through dashboards and reports.
 
-## Overview
+## 🚀 Project Overview
 
-This project provides a centralized web interface for business data management and operational reporting. It combines CRUD operations with dashboard KPIs, search, pagination, sales summaries, and delivery analytics.
+The Business Intelligence System is designed to manage and analyze business operations from a centralized application.
 
-## Key Features
+It provides modules for:
 
-- Admin login and session-based page protection
-- Dashboard with product, customer, sales, and delivery KPIs
-- Product management
-  - Add products
-  - Edit products
-  - Delete products
-  - Search products
-  - Pagination
-- Customer management
-  - Add customers
-  - Edit customers
-  - Delete customers
-  - Search customers
-  - Pagination
-- Sales management
-  - Add sales
-  - Edit sales
-  - Delete sales
-  - Product/customer selection
-  - Search and pagination
-  - Sales summary
-  - Monthly sales data
-- Delivery performance
-  - Delivery records
-  - Search and pagination
-  - Average delivery time
-  - Average delivery distance
-  - Delivery partner count
-  - Delivery status summary
-- Reports
-  - Total sales
-  - Total profit
-  - Total orders
-  - Total customers
-  - Monthly sales and profit
-  - Sales by category
-  - Top products by sales
-  - Delivery summary
-- Responsive UI built with HTML, CSS, Bootstrap-style components, and JavaScript
+* Product management
+* Customer management
+* Sales management
+* Delivery performance tracking
+* Business dashboards
+* Analytical reports
+* Search and filtering
+* CRUD operations
+* Database-driven analytics
 
-## Technology Stack
+The system combines **business data management with analytics**, making it useful for understanding sales performance, customer activity, product information and delivery operations.
 
-- **Backend:** Python, Flask
-- **Database:** MySQL
-- **Database Connector:** PyMySQL
-- **Frontend:** HTML, CSS, JavaScript
-- **Charts:** JavaScript-based chart/report visualizations
-- **Development Environment:** VS Code / MySQL Workbench
+## 🎯 Objectives
 
-## Project Structure
+* Centralize business data in a structured MySQL database
+* Provide an easy-to-use web interface for managing business records
+* Track sales and customer activity
+* Monitor delivery performance
+* Generate meaningful business insights
+* Provide a foundation for data-driven decision making
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+* Bootstrap
+
+### Backend
+
+* Python
+* Flask
+* Jinja2
+
+### Database
+
+* MySQL
+* SQLAlchemy
+* PyMySQL
+
+### Data & Analytics
+
+* Pandas
+* NumPy
+* JavaScript-based charts
+
+### Development Tools
+
+* VS Code
+* Git
+* GitHub
+
+## 📦 Main Modules
+
+### 1. Dashboard
+
+The dashboard provides an overview of important business KPIs such as:
+
+* Total Products
+* Total Customers
+* Total Sales
+* Delivery Information
+* Quick access to major modules
+
+### 2. Product Management
+
+The product module allows users to:
+
+* View products
+* Add products
+* Edit products
+* Delete products
+* Search products
+* Manage product information
+
+### 3. Customer Management
+
+The customer module manages:
+
+* Customer name
+* Email
+* Phone number
+* Address
+* Area
+* Pincode
+* Customer segment
+* Total orders
+* Average order value
+
+It also supports customer search and CRUD operations.
+
+### 4. Sales Management
+
+The sales module tracks:
+
+* Product
+* Customer
+* Sale date
+* Quantity
+* Sales amount
+* Discount
+* Profit
+
+It also provides sales summaries and visual analytics.
+
+### 5. Delivery Performance
+
+The delivery module tracks:
+
+* Order information
+* Delivery partner
+* Promised time
+* Actual delivery time
+* Delivery duration
+* Distance
+* Delivery status
+* Delay reasons
+
+This helps identify delivery performance and operational issues.
+
+### 6. Reports & Analytics
+
+The reports section provides visual insights into business performance using charts and summary metrics.
+
+Examples include:
+
+* Sales trends
+* Sales performance
+* Profit analysis
+* Delivery performance
+* Customer-related insights
+
+## 🗄️ Database
+
+The application uses a MySQL database named:
+
+`blinkit_sales_analytics`
+
+The database stores business entities such as:
+
+* Products
+* Customers
+* Sales
+* Delivery performance
+
+Relationships between business entities allow the application to retrieve and analyze connected business information.
+
+## 📁 Project Structure
 
 ```text
-blinkit_business_intelligence_system/
+Business Intelligence System/
 │
 ├── Backend/
 │   ├── static/
-│   │   └── style.css
-│   ├── js/
-│   │   ├── script.js
-│   │   ├── sales.js
-│   │   ├── delivery.js
-│   │   └── reports.js
+│   │   ├── style.css
+│   │   └── js/
+│   │       ├── script.js
+│   │       ├── sales.js
+│   │       ├── delivery.js
+│   │       └── reports.js
+│   │
 │   ├── app.py
-│   ├── models.py
-│   ├── routes.py
 │   ├── config.py
-│   └── database.py
+│   ├── database.py
+│   ├── models.py
+│   └── routes.py
 │
 ├── Frontend/
 │   └── templates/
-│       ├── base.html
 │       ├── index.html
 │       ├── login.html
 │       ├── dashboard.html
@@ -94,30 +194,23 @@ blinkit_business_intelligence_system/
 │       ├── delivery.html
 │       └── reports.html
 │
-├── README.md
+├── Dataset/
+│
+├── .gitignore
 ├── requirements.txt
-└── .gitignore
+└── README.md
 ```
 
-## Database
-
-The application works with MySQL tables for:
-
-- Users
-- Products
-- Customers
-- Sales
-- Delivery performance
-
-Sales records connect products and customers, allowing combined business reporting and analysis.
-
-## Running the Project
+## ⚙️ Installation
 
 ### 1. Clone the repository
 
 ```bash
-git clone <your-github-repository-url>
-cd blinkit_business_intelligence_system
+git clone https://github.com/AnujVerma-19/Business-Intelligence-System.git
+```
+
+```bash
+cd Business-Intelligence-System
 ```
 
 ### 2. Create a virtual environment
@@ -126,55 +219,84 @@ cd blinkit_business_intelligence_system
 python -m venv venv
 ```
 
-Activate it on Windows:
+### 3. Activate the virtual environment
+
+Windows:
 
 ```bash
 venv\Scripts\activate
 ```
 
-### 3. Install dependencies
+### 4. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure MySQL
+### 5. Configure the database
 
-Update the database configuration in `Backend/config.py` with your local MySQL credentials and database name.
+Create the MySQL database:
 
-Do not upload real passwords or credentials to GitHub.
-
-### 5. Run the Flask application
-
-Run the application from the `Backend` directory:
-
-```bash
-python app.py
+```sql
+CREATE DATABASE blinkit_sales_analytics;
 ```
 
-Then open the local address shown by Flask in your browser.
+Configure the database credentials in the local environment configuration.
 
-## Important Security Note
+**Do not upload database passwords or other secrets to GitHub.**
 
-Before deploying this application publicly:
+### 6. Run the application
 
-- Move database credentials to environment variables.
-- Use a strong Flask secret key.
-- Store passwords securely using password hashing instead of plain-text passwords.
-- Add CSRF protection to forms.
-- Use HTTPS in production.
+```bash
+python Backend/app.py
+```
 
-## Project Purpose
+The application will be available locally through the Flask development server.
 
-The system demonstrates how a business can manage operational data and turn it into useful business information through dashboards, summaries, and reports.
+## 🔐 Security
 
-## Future Improvements
+Sensitive configuration such as database passwords is kept outside the public repository using environment variables.
 
-- Role-based access control
-- Secure password hashing
-- Export reports to CSV/PDF
-- Advanced filtering and date-range analysis
-- Automated inventory alerts
-- Sales forecasting
-- REST API
-- Production deployment
+The `.env` file is excluded through `.gitignore`.
+
+## 📊 Business Value
+
+The system can help a business monitor:
+
+* Product information
+* Customer activity
+* Sales performance
+* Profitability
+* Order activity
+* Delivery efficiency
+
+By bringing these areas together, the application provides a centralized view of business operations and supports data-driven decision making.
+
+## 🔮 Future Enhancements
+
+Possible future improvements include:
+
+* Role-based user authentication
+* Advanced sales forecasting
+* Customer segmentation
+* Inventory management
+* Automated KPI alerts
+* Advanced interactive analytics
+* Export reports to PDF/Excel
+* REST API integration
+* Cloud deployment
+* Power BI integration
+
+## 👨‍💻 Author
+
+**Anuj Verma**
+
+BCA Student | Aspiring Data Analyst
+
+GitHub:
+https://github.com/AnujVerma-19
+
+## ⭐ Project
+
+If you find this project useful, consider giving the repository a star.
+
