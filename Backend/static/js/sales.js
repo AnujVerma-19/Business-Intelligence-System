@@ -7,10 +7,19 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    const monthlyData = JSON.parse(dataElement.textContent);
+    let monthlyData = [];
+
+    try {
+        monthlyData = JSON.parse(dataElement.textContent);
+    } catch (error) {
+        console.error("Unable to read monthly sales data:", error);
+        return;
+    }
 
     const months = monthlyData.map(item => item.month);
-    const salesValues = monthlyData.map(item => Number(item.total_sales));
+    const salesValues = monthlyData.map(
+        item => Number(item.total_sales || 0)
+    );
 
     new Chart(canvas, {
         type: "line",
@@ -21,9 +30,13 @@ document.addEventListener("DOMContentLoaded", function () {
             datasets: [{
                 label: "Monthly Sales",
                 data: salesValues,
-                borderWidth: 2,
-                tension: 0.3,
-                fill: false
+
+                borderWidth: 3,
+                tension: 0.35,
+                fill: true,
+
+                pointRadius: 4,
+                pointHoverRadius: 6
             }]
         },
 
@@ -31,9 +44,43 @@ document.addEventListener("DOMContentLoaded", function () {
             responsive: true,
             maintainAspectRatio: false,
 
+            interaction: {
+                intersect: false,
+                mode: "index"
+            },
+
+            plugins: {
+                legend: {
+                    display: true,
+                    position: "top"
+                },
+
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            return "Sales: ₹" +
+                                Number(context.raw).toLocaleString("en-IN");
+                        }
+                    }
+                }
+            },
+
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    }
+                },
+
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+
+                    ticks: {
+                        callback: function (value) {
+                            return "₹" +
+                                Number(value).toLocaleString("en-IN");
+                        }
+                    }
                 }
             }
         }

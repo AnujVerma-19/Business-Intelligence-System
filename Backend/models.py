@@ -682,7 +682,22 @@ def get_sales_summary():
             COALESCE(SUM(sales_amount), 0) AS total_sales,
             COALESCE(SUM(profit), 0) AS total_profit,
             COALESCE(SUM(quantity), 0) AS total_quantity,
-            COUNT(*) AS total_orders
+            COUNT(*) AS total_orders,
+
+            CASE
+                WHEN COALESCE(SUM(sales_amount), 0) = 0
+                THEN 0
+                ELSE (COALESCE(SUM(profit), 0)
+                      / SUM(sales_amount)) * 100
+            END AS profit_margin,
+
+            CASE
+                WHEN COUNT(*) = 0
+                THEN 0
+                ELSE COALESCE(SUM(sales_amount), 0)
+                     / COUNT(*)
+            END AS average_order_value
+
         FROM sales
     """
 
@@ -694,7 +709,6 @@ def get_sales_summary():
     conn.close()
 
     return summary
-
 def get_monthly_sales():
 
     conn = get_connection()
